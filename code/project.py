@@ -3,41 +3,83 @@ def loadabcFiles(filename):
         lines = f.readlines()  
     return lines
 
+
+def cleanFiles(lines):
+    tunes = []
+    
+    for line in lines:
+        # Check if this starts a new tune
+        line = line.strip()
+
+        if line.startswith("X:"):
+            current_tune_lines = {
+                "id": int(line[2:]),
+                "title": None,
+                "alt_title": None,
+                "tune": None,
+                "Key": None,
+                
+            }
+            title_check = False
+
+        elif line.startswith("T:"):
+            title = line[2:].strip()
+            if not title_check:
+                current_tune_lines['title'] = title
+                title_check = True
+            else:
+                current_tune_lines['alt_title'] = title
+
+        elif line.startswith("R:"):
+            current_tune_lines['tune'] = line[2:].strip()
+        elif line.startswith("K:"):
+            current_tune_lines['Key'] = line[2:].strip()
+            tunes.append(current_tune_lines.copy())
+    return tunes
+
+
+
 tunes = []
 
 lines = loadabcFiles("abc_books/2/00.abc")
-title_check = False
+tunes.append(cleanFiles(lines))
 
-for line in lines:
-    # Check if this starts a new tune
-    line = line.strip()
+lines = loadabcFiles("abc_books/2/01.abc")
+tunes.append(cleanFiles(lines))
 
-    if line.startswith("X:"):
-        current_tune_lines = {
-            "id": int(line[2:]),
-            "title": None,
-            "alt_title": None,
-            "tune": None,
-            "Key": None,
-            
-        }
-        title_check = False
+lines = loadabcFiles("abc_books/2/02.abc")
+tunes.append(cleanFiles(lines))
 
-    elif line.startswith("T:"):
-        title = line[2:].strip()
-        if not title_check:
-            current_tune_lines['title'] = title
-            title_check = True
-        else:
-            current_tune_lines['alt_title'] = title
+lines = loadabcFiles("abc_books/2/03.abc")
+tunes.append(cleanFiles(lines))
 
-    elif line.startswith("R:"):
-        current_tune_lines['tune'] = line[2:].strip()
-    elif line.startswith("K:"):
-        current_tune_lines['Key'] = line[2:].strip()
-        tunes.append(current_tune_lines.copy())
+lines = loadabcFiles("abc_books/2/04.abc")
+tunes.append(cleanFiles(lines))
+
+lines = loadabcFiles("abc_books/2/05.abc")
+tunes.append(cleanFiles(lines))
+
+lines = loadabcFiles("abc_books/2/06.abc")
+tunes.append(cleanFiles(lines))
+
+lines = loadabcFiles("abc_books/2/07.abc")
+tunes.append(cleanFiles(lines))
+
+lines = loadabcFiles("abc_books/2/08.abc")
+tunes.append(cleanFiles(lines))
+
+lines = loadabcFiles("abc_books/2/09.abc")
+tunes.append(cleanFiles(lines))
+
+lines = loadabcFiles("abc_books/2/10.abc")
+tunes.append(cleanFiles(lines))
 
 
-print(lines[:20])
+tunes = [item for sublist in tunes for item in sublist]
+
+
+
 
 print(tunes)
+
+print(len(tunes))

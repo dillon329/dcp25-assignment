@@ -21,7 +21,7 @@ def cleanFiles(lines):
             current_tune_lines = {
                 "id": int(line[2:]),
                 "title": None,
-                "alt_title": None,
+                "alt_title": '',
                 "tune": None,
                 "Key": None,
                 
@@ -85,8 +85,9 @@ tunes.append(cleanFiles(lines))
 tunes = [item for sublist in tunes for item in sublist]
 
 i = 1
-
+"""
 tunes_index = []
+#makes sure there no dupes
 for tune in tunes:
     x = {
         "index": None,
@@ -98,7 +99,28 @@ for tune in tunes:
     i += 1
     tunes_index.append(x)
     print(x)
+"""    
+running = False 
     
+while running != True:
+    
+    print(f"\nThere are {len(tunes)} in this database, select a number between 1 and {len(tunes)} and it will show you information about that tune \nPress q to end program")
+    database_index = input("")
+    if not database_index.isdigit():
+        if database_index.lower() == 'q':
+            running = True
+        else:
+            print("That is not a valid entry")
+    else:
+        index = int(database_index) - 1
+        if index > len(tunes) or index < 0:
+            print("That number is not valid")
+        else:
+            if tunes[index]['alt_title'] == '':
+                print(f"{tunes[index]['title']} is the title of the track you have slected \nIt is an {tunes[index]['tune']} tune \nIt is written in {tunes[index]['title']} key")
+            else:
+                print(f"{tunes[index]['title']} is the title of the track you have selected\nIt has an alt title of {tunes[index['alt_title']]} \nIt is an {tunes[index]['tune']} tune \n it is written in {tunes[index]['title']} key")
+  
 
 
 

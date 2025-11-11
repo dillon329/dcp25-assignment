@@ -2,9 +2,9 @@
 
 - [Assignment Brief](assignment.md)
 
-Name:
+Name: Dillon Thornton
 
-Student Number: 
+Student Number: C24452624
 
 # Screenshots
 

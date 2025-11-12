@@ -7,7 +7,7 @@ def loadabcFiles(filename):
 
 
 def cleanFiles(lines):
-    tunes = []
+    global tunes 
     #not all lines end with the same line, thus i added this to make it so that after the for loop has passed through once
     #that it would append when it comes up on a new X:, and for the last set just to append it when the for loop is finished
     pass_through_1 = False
@@ -44,47 +44,21 @@ def cleanFiles(lines):
         elif line.startswith("K:"):
             current_tune_lines['Key'] = line[2:].strip()
     tunes.append(current_tune_lines.copy())
-    return tunes
+    
 
 
 
 tunes = []
 
-lines = loadabcFiles("abc_books/2/00.abc")
-tunes.append(cleanFiles(lines))
+files = ['abc_books/2/00.abc',"abc_books/2/01.abc", "abc_books/2/02.abc", "abc_books/2/03.abc",
+         "abc_books/2/04.abc", "abc_books/2/05.abc", "abc_books/2/06.abc", "abc_books/2/07.abc",
+         "abc_books/2/08.abc", "abc_books/2/09.abc", "abc_books/2/10.abc"]
 
-lines = loadabcFiles("abc_books/2/01.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/02.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/03.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/04.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/05.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/06.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/07.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/08.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/09.abc")
-tunes.append(cleanFiles(lines))
-
-lines = loadabcFiles("abc_books/2/10.abc")
-tunes.append(cleanFiles(lines))
+for file in files:
+    file = loadabcFiles(file)
+    cleanFiles(file)
 
 #parses the sublists in the tunes list
-tunes = [item for sublist in tunes for item in sublist]
 
 #checking for dupes in dataset, alter by chatGpt
 seen_titles = set()
@@ -133,9 +107,11 @@ while running != True:
                     else:
                         print(f"{tunes[index]['title']} is the title of the track you have selected\nIt has an alt title of {tunes[index['alt_title']]} \nIt is an {tunes[index]['tune']} tune \n it is written in {tunes[index]['title']} key")
     elif int(search_type) == 2:
-        user_title = input("Please enter a title of a tune you want to find \nPress ESC to quit")
-        if user_title == '^[':
-              pass
+        while True:
+            user_title = input("Please enter a title of a tune you want to find \nPress ESC to quit")
+            if user_title == '^[':
+                break
+            
         
     else:
         print("That is not valid")

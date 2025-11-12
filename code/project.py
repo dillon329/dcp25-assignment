@@ -77,6 +77,7 @@ for number, tune in enumerate(tunes, start=1):
     tune['id'] = number
 i = 1
 
+print(tunes)
 
   
 running = False 
@@ -108,9 +109,43 @@ while running != True:
                         print(f"{tunes[index]['title']} is the title of the track you have selected\nIt has an alt title of {tunes[index['alt_title']]} \nIt is an {tunes[index]['tune']} tune \n it is written in {tunes[index]['title']} key")
     elif int(search_type) == 2:
         while True:
-            user_title = input("Please enter a title of a tune you want to find \nPress ESC to quit")
-            if user_title == '^[':
+            for tune in tunes:
+                if tune['alt_title'] != '':
+                    print(tune)
+            user_title_search_libray = []
+            user_title = input("Please enter a title of a tune you want to find \nPress Q to quit\n")
+            if user_title.lower() == 'q':
                 break
+            elif len(user_title) > 0:
+                if len(user_title) >= 5:
+                    for tune in tunes:
+                        if user_title.lower() in tune['title'].lower() or user_title.lower() in tune['alt_title'].lower():
+                            user_title_search_libray.append(tune)
+                else:
+                    for tune in tunes:
+                        if tune['title'].lower().startswith(user_title.lower()) or tune['alt_title'].lower().startswith(user_title.lower()):
+                            user_title_search_libray.append(tune)
+                            
+                if user_title_search_libray == []:
+                    print(f"Could not find {user_title}")
+                else:
+                    for number, tune in enumerate(user_title_search_libray, start=1):
+                        tune['id'] = number
+                        if tune['alt_title'] == '':
+                            print(f"{tune['id']}:{tune['title']} is the title ")
+                        else:
+                            print((f"{tune['id']}:{tune['title']} is the title, also goes by {tune["alt_title"]}"))
+                    while True:
+                        search_index = input("Please select the index of the title you are searching for and I'll display the information to you\nPress Q to quit")
+                        if search_index.lower() == 'q':
+                            break
+                        elif not search_index.isdigit() or int(search_index) > len(user_title_search_libray) or int(search_index) < len(user_title_search_libray):
+                            print("That is not a valid option")
+                        else:
+                            print(tune[search_index-1])
+                        
+            else:
+                print("That is not valid")
             
         
     else:

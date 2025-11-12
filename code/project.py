@@ -1,3 +1,5 @@
+from collections import Counter
+
 def loadabcFiles(filename):
     with open(filename, "r", encoding='latin-1') as f:
         lines = f.readlines()  
@@ -19,7 +21,7 @@ def cleanFiles(lines):
                 tunes.append(current_tune_lines.copy())
                 
             current_tune_lines = {
-                "id": int(line[2:]),
+                "id": None,
                 "title": None,
                 "alt_title": '',
                 "tune": None,
@@ -84,49 +86,80 @@ tunes.append(cleanFiles(lines))
 #parses the sublists in the tunes list
 tunes = [item for sublist in tunes for item in sublist]
 
-i = 1
-"""
-tunes_index = []
-#makes sure there no dupes
+#checking for dupes in dataset, alter by chatGpt
+seen_titles = set()
+unique_tunes = []
+
 for tune in tunes:
-    x = {
-        "index": None,
-        "id": None    
-    }
-    x['id'] = tune['id']
-    x['id'] = tune['id']
-    x["index"] = i
-    i += 1
-    tunes_index.append(x)
-    print(x)
-"""    
+    title = tune['title']
+    if title not in seen_titles:
+        seen_titles.add(title)
+        unique_tunes.append(tune)
+
+tunes = unique_tunes
+
+#gives ever tune a unique id
+for number, tune in enumerate(tunes, start=1):
+    tune['id'] = number
+i = 1
+
+
+  
 running = False 
-    
+ 
 while running != True:
-    
-    print(f"\nThere are {len(tunes)} in this database, select a number between 1 and {len(tunes)} and it will show you information about that tune \nPress q to end program")
-    database_index = input("")
-    if not database_index.isdigit():
-        if database_index.lower() == 'q':
-            running = True
-        else:
-            print("That is not a valid entry")
-    else:
-        index = int(database_index) - 1
-        if index > len(tunes) or index < 0:
-            print("That number is not valid")
-        else:
-            if tunes[index]['alt_title'] == '':
-                print(f"{tunes[index]['title']} is the title of the track you have slected \nIt is an {tunes[index]['tune']} tune \nIt is written in {tunes[index]['title']} key")
+    search_type = input("Enter 1 to search by the index of the list \nEnter 2 to search by the name \nEnter q to quit")
+    if search_type == 'q':
+        running = True
+    elif not search_type.isdigit():
+        print("That is not a valid option")
+        print("That is not valid")
+    elif int(search_type) == 1:
+        while True:
+            print(f"\nThere are {len(tunes)} in this database, select a number between 1 and {len(tunes)} and it will show you information about that tune \nPress q to go back to search type")
+            database_index = input("")
+            if not database_index.isdigit():
+                if database_index.lower() == 'q':
+                    break
+                else:
+                    print("That is not a valid entry")
             else:
-                print(f"{tunes[index]['title']} is the title of the track you have selected\nIt has an alt title of {tunes[index['alt_title']]} \nIt is an {tunes[index]['tune']} tune \n it is written in {tunes[index]['title']} key")
+                index = int(database_index) - 1
+                if index > len(tunes) or index < 0:
+                    print("That number is not valid")
+                else:
+                    if tunes[index]['alt_title'] == '':
+                        print(f"{tunes[index]['title']} is the title of the track you have slected \nIt is an {tunes[index]['tune']} tune \nIt is written in {tunes[index]['title']} key")
+                    else:
+                        print(f"{tunes[index]['title']} is the title of the track you have selected\nIt has an alt title of {tunes[index['alt_title']]} \nIt is an {tunes[index]['tune']} tune \n it is written in {tunes[index]['title']} key")
+    elif int(search_type) == 2:
+        user_title = input("Please enter a title of a tune you want to find \nPress ESC to quit")
+        if user_title == '^[':
+              pass
+        
+    else:
+        print("That is not valid")
   
 
 
 
-print(tunes[228])
-print(tunes[227])
 
-#print(tunes)
+# code to make sure no dupes
+"""
+checker = []
 
-#print(len(tunes))
+for tune in tunes:
+    checker.append(tune['title'])
+
+counts = Counter(checker)
+duplicates = [checker for checker, count in counts.items() if count >= 2]
+
+duplicates = {title: count for title, count in counts.items() if count >= 2}
+"""
+            
+
+
+    
+
+
+

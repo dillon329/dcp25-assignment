@@ -6,6 +6,9 @@ def loadabcFiles(filename):
     return lines
 
 
+
+
+
 def cleanFiles(lines):
     global tunes 
     #not all lines end with the same line, thus i added this to make it so that after the for loop has passed through once

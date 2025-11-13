@@ -25,7 +25,7 @@ def cleanFiles(lines):
                 tunes.append(current_tune_lines.copy())
                 
             current_tune_lines = {
-                "id": None,
+                "id": int(line),
                 "title": None,
                 "alt_title": '',
                 "tune": None,

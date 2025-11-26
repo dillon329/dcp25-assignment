@@ -1,7 +1,8 @@
 from collections import Counter
-import os
-import re
 
+import pandas as pd
+import mysql.connector
+import sqlite3
 
 
 
@@ -42,105 +43,18 @@ def search(tunes):
             else:
                 print("That is not valid")
 
-def cleanFiles(lines):
-    current_tune_lines = {
-                "id": None,
-                "title": None,
-                "alt_title": '',
-                "tune": None,
-                "Key": None,
-                
-            }
-    tunes = []
-    #not all lines end with the same line, thus i added this to make it so that after the for loop has passed through once
-    #that it would append when it comes up on a new X:, and for the last set just to append it when the for loop is finished
-    pass_through_1 = False
-    for line in lines:
-        
-        # Check if this starts a new tune
-        line = line.strip()
-        if line =='X: 228':
-            pass
-        if line.startswith("X:"):
-            if pass_through_1 != False:
-                tunes.append(current_tune_lines.copy())
-                
-            current_tune_lines = {
-                "id": int(line[2:]),
-                "title": None,
-                "alt_title": '',
-                "tune": None,
-                "Key": None,
-                
-            }
-            title_check = False
-            pass_through_1 = True
-
-        elif line.startswith("T:"):
-            title = line[2:].strip()
-            if not title_check:
-                current_tune_lines['title'] = title
-                title_check = True
-            else:
-                current_tune_lines['alt_title'] = title
-
-        elif line.startswith("R:"):
-            current_tune_lines['tune'] = line[2:].strip()
-            
-        elif line.startswith("K:"):
-            current_tune_lines['Key'] = line[2:].strip()
-    tunes.append(current_tune_lines.copy())
-    return tunes
 
 
-def loadabcFiles(folder):
-    global tunes 
-    for foldername in os.listdir(folder):
-        for filename in os.listdir(folder+"/"+foldername):
-            if filename.endswith(".abc"):
-                path = os.path.join(folder, foldername, filename)
-                with open(path, "r", encoding="utf-8") as f:
-                    lines = f.readlines()
-                    tunes.append(cleanFiles(lines))
-
-tunes = []
-
-folder = "abc_books"
-                
-loadabcFiles(folder)
-
-print(tunes)
-#parses the sublists in the tunes list
-tunes = [item for sublist in tunes for item in sublist]
-
-for i in range(len(tunes)):
-    if tunes[i]['id'] == None or tunes[i]['title'] == None:
-        del tunes[i]
-
-
-#checking for dupes in dataset, alter by chatGpt
-seen_titles = set()
-unique_tunes = []
-
-for tune in tunes:
-    title = tune['title']
-    if title not in seen_titles:
-        seen_titles.add(title)
-        unique_tunes.append(tune)
-
-tunes = unique_tunes
-tune_list = []
-
-#gives ever tune a unique id
-for number, tune in enumerate(tunes, start=1):
-    tune['id'] = number
-    tune_list.append(tune['tune']) 
-i = 1
-
-print(tunes)
-tune_list = set(tune_list)
-
-  
+def do_databasse_stuff():
+    global df 
+    conn = sqlite3.connect('tunes.db')
+    cursor = conn.cursor()
+    
+    df = pd.read_sql("SELECT * FROM tunes", conn)
+    print(df.head())
+    conn.close()
+do_databasse_stuff()
+print(df.head())
 running = False 
  
 while running != True:
@@ -178,7 +92,7 @@ while running != True:
   
 
 
-print(tunes[1])
+
 
 """
 checker = []

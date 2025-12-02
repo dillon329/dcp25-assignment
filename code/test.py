@@ -149,9 +149,11 @@ def do_databasse_stuff():
 
     # Create table
     cursor.execute('CREATE TABLE IF NOT EXISTS tunes (id INTEGER, title TEXT, alt_title TEXT, tune TEXT, key TEXT)')
-
+    
     # Insert data
     for row in tunes:
+        if row['alt_title'] == '':
+            row['alt_title'] = None
         cursor.execute('INSERT INTO tunes (id, title, alt_title, tune, key) VALUES (?, ?, ?, ?, ?)', (row['id'], row['title'],row['alt_title'],row['tune'],row['Key']))
 
     # Save changes

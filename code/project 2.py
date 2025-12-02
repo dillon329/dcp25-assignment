@@ -1,10 +1,14 @@
 from collections import Counter
-
+import tkinter as tk
 import pandas as pd
-import mysql.connector
 import sqlite3
 
 
+
+
+def get_input():
+    user_text = entry.get()
+    label.config(text=f"You entered:{user_text}")
 
 def search(tunes):
      while True:
@@ -55,6 +59,8 @@ def do_databasse_stuff():
     conn.close()
 do_databasse_stuff()
 print(df)
+
+"""
 running = False 
  
 while running != True:
@@ -89,6 +95,61 @@ while running != True:
             print(tune)  
     else:
         print("That is not valid")
+"""
+
+def click(type):
+    print(f"You clicked the button {type}")
+    
+    
+    
+root = tk.Tk()
+root.title
+root.geometry("800x400")
+
+label = tk.Label(root, text = "Select a mode to search by")
+label.pack(pady=10)
+
+button_index = tk.Button(root,
+               text = "Index",
+               command = lambda: click('id'),
+               font = ("Comic Sans",30),
+               width=10,   
+               height=1 )
+
+button_index.pack()
+
+
+button_titles = tk.Button(root,
+               text = "Titles",
+               command = lambda: click('title'),
+               font = ("Comic Sans",30),
+               width=10,   
+               height=1)
+button_titles.pack()
+
+button_tune = tk.Button(root,
+               text = "Tune",
+               command = lambda : click('tune'),
+               font = ("Comic Sans",30),
+               width=10,   
+               height=1)
+button_tune.pack()
+
+button_key = tk.Button(root,
+               text = "Key",
+               command = lambda: click('key'),
+               font = ("Comic Sans",30),
+               width=10,   
+               height=1)
+button_key.pack()
+
+button = tk.Button(root, text='Submit', command=get_input)
+button.pack(pady=10)
+
+
+
+
+root.mainloop()
   
 
 

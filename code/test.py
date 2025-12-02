@@ -1,13 +1,81 @@
 # Starter code to load in the files into a sql database
-
-
-
-
 import os 
 import sqlite3
-import pandas as pd
-import mysql.connector
+
 # sqlite for connecting to sqlite databases
+
+
+#done so that everything this program is run the database tunes.db is reset
+conn = sqlite3.connect("tunes.db")
+cursor = conn.cursor()
+
+# Get list of tables
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+tables = cursor.fetchall()
+
+# Drop each table
+for table in tables:
+    cursor.execute(f"DROP TABLE IF EXISTS {table[0]}")
+
+conn.commit()
+conn.close()
+
+abc_encoding_LOOKUP ={
+    #grave
+    '\\`A': 'À', '\\`a': 'à', '\\`E': 'È', '\\`e': 'è', 
+    '\\`I': 'Ì', '\\`i': 'ì', '\\`O': 'Ò', '\\`o': 'ò',
+    '\\`U': 'Ù', '\\`u': 'ù',
+
+    #acute
+    "\\'A": 'Á', "\\'a": 'á', "\\'E": 'É', "\\'e": 'é',
+    "\\'I": 'Í', "\\'i": 'í', "\\'O": 'Ó', "\\'o": 'ó',
+    "\\'U": 'Ú', "\\'u": 'ú', "\\'Y": 'Ý', "\\'y": 'ý',
+
+    #circumflex
+    '\\^A': 'Â', '\\^a': 'â', '\\^E': 'Ê', '\\^e': 'ê',
+    '\\^I': 'Î', '\\^i': 'î', '\\^O': 'Ô', '\\^o': 'ô',
+    '\\^U': 'Û', '\\^u': 'û',
+
+    #tilde
+    '\\~A': 'Ã', '\\~a': 'ã', '\\~N': 'Ñ', '\\~n': 'ñ',
+    '\\~O': 'Õ', '\\~o': 'õ',
+
+    #umlauts
+    '\\"A': 'Ä', '\\"a': 'ä', '\\"E': 'Ë', '\\"e': 'ë',
+    '\\"I': 'Ï', '\\"i': 'ï', '\\"O': 'Ö', '\\"o': 'ö',
+    '\\"U': 'Ü', '\\"u': 'ü', '\\"Y': 'Ÿ', '\\"y': 'ÿ',
+    
+    #cedilla
+    '\\cC': 'Ç', '\\cc': 'ç',
+
+    #ring
+    '\\AA': 'Å', '\\aa': 'å',
+
+    #slash
+    '\\/O': 'Ø', '\\/o': 'ø',
+
+    #breve
+    '\\uA': 'Ă', '\\ua': 'ă', '\\uE': 'Ĕ', '\\ue': 'ĕ',
+
+    #caron
+    '\\vS': 'Š', '\\vs': 'š', '\\vZ': 'Ž', '\\vz': 'ž',
+    '\\vC': 'Č', '\\vc': 'č',
+
+    #double acute
+    '\\HO': 'Ő', '\\Ho': 'ő', '\\HU': 'Ű', '\\Hu': 'ű',
+
+    #ligatures
+    '\\ss': 'ß', '\\AE': 'Æ', '\\ae': 'æ', '\\oe': 'œ', '\\OE': 'Œ',}
+def decode_abc(text: str) -> str:
+    if not text:
+        return text
+
+    decoded = text
+
+    for key in sorted(abc_encoding_LOOKUP, key=len, reverse=True):
+        decoded = decoded.replace(key, abc_encoding_LOOKUP[key])
+
+    return decoded
 
 
 def cleanFiles(lines):
@@ -27,8 +95,7 @@ def cleanFiles(lines):
         
         # Check if this starts a new tune
         line = line.strip()
-        if line =='X: 228':
-            pass
+        decode_abc(line)
         if line.startswith("X:"):
             if pass_through_1 != False:
                 tunes.append(current_tune_lines.copy())
@@ -147,4 +214,5 @@ i = 1
 
 print(tunes)
 tune_list = set(tune_list) 
+print(tunes)
 do_databasse_stuff()

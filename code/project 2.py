@@ -54,7 +54,7 @@ def do_databasse_stuff():
     print(df.head())
     conn.close()
 do_databasse_stuff()
-print(df.head())
+print(df)
 running = False 
  
 while running != True:

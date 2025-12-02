@@ -5,10 +5,8 @@ import sqlite3
 
 
 
+search_tttt = None
 
-def get_input():
-    user_text = entry.get()
-    label.config(text=f"You entered:{user_text}")
 
 def search(tunes):
      while True:
@@ -96,59 +94,116 @@ while running != True:
     else:
         print("That is not valid")
 """
+def search_query(column_name,looking_For):
+    pass
+    
+def search_query_id(id):
+    result = df[df["id"] == int(id)]
+    
+    
+def get_input_search(type,entry_widget):
+    global search_tttt
+    global df
+    if search_tttt is not None:
+        search_tttt.destroy()
+    query = entry_widget.get()
+    if type == 'id':
+        if not query.isdigit():
+            search_tttt = tk.Label(page_search, text = f"Your searched {query} from the {type}, you need to enter an integer")
+            search_tttt.pack()
+            #return to end the function imdtially as number isnt valid
+            return
+        elif int(query) <= 0 or int(query) > df.shape[0]:
+            search_tttt = tk.Label(page_search, text = f"Your search needs to be between 1 and {df.shape[0]}")
+            search_tttt.pack()
+        
+        else:
+            search_tttt = tk.Label(page_search, text = f"Your searched {query} from the {type},\n that is correct")
+            search_tttt.pack()
+            search_query_id(query)
+    else:  
+        search_tttt = tk.Label(page_search, text = f"Your searched {query} from the {type}")
+        search_tttt.pack()
+        search_query(type,query)
+    
 
-def click(type):
-    print(f"You clicked the button {type}")
+
+def click_search(type):
+    
+    for widget in page_search.winfo_children():
+        widget.destroy()
+    
+    label = tk.Label(page_search, text=f"You selected: {type}", font=("Comic Sans", 30))
+    label.pack(padx=40, pady=40)
+    
+    back_button =  tk.Button(page_search,
+                             text = 'back',
+                             font=("Comic Sans", 20),
+                             command=lambda: show_frame(page_menu))
+    back_button.pack()
+    
+    
+    label = tk.Label(page_search, text = f"Search by {type}:")
+    label.pack(pady = 10)
+    
+    enter = tk.Entry(page_search,width = 30)
+    enter.pack(pady = 10)
+    
+    button = tk.Button(page_search, text="Submit",command= lambda : get_input_search(type,enter))
+    button.pack(pady = 10)
+    show_frame(page_search)
+    
+    
     
     
     
 root = tk.Tk()
-root.title
-root.geometry("800x400")
-
-label = tk.Label(root, text = "Select a mode to search by")
-label.pack(pady=10)
-
-button_index = tk.Button(root,
-               text = "Index",
-               command = lambda: click('id'),
-               font = ("Comic Sans",30),
-               width=10,   
-               height=1 )
-
-button_index.pack()
+root.title("DCP-assignment")
 
 
-button_titles = tk.Button(root,
-               text = "Titles",
-               command = lambda: click('title'),
-               font = ("Comic Sans",30),
-               width=10,   
-               height=1)
-button_titles.pack()
+# ---------- helper to switch pages ----------
+def show_frame(frame):
+    frame.tkraise()  # bring this frame to the front
+    
+container = tk.Frame(root)
+container.pack(fill="both", expand=True)
 
-button_tune = tk.Button(root,
-               text = "Tune",
-               command = lambda : click('tune'),
-               font = ("Comic Sans",30),
-               width=10,   
-               height=1)
-button_tune.pack()
+# ---------- create two "pages" ----------
+page_menu = tk.Frame(container)
+page_search = tk.Frame(container)
 
-button_key = tk.Button(root,
-               text = "Key",
-               command = lambda: click('key'),
-               font = ("Comic Sans",30),
-               width=10,   
-               height=1)
-button_key.pack()
+for page in (page_menu, page_search):
+    page.grid(row=0, column=0, sticky="nsew")
 
-button = tk.Button(root, text='Submit', command=get_input)
-button.pack(pady=10)
+container.grid_rowconfigure(0, weight=1)
+container.grid_columnconfigure(0, weight=1)
 
 
+#-----------Main Menu Code-----------
+
+#function to make search type buttons on the main menu
+def make_button(names):
+    return tk.Button(
+        page_menu,
+        text= names,
+        font=("Comic Sans", 30),
+        command=lambda: click_search(names),
+        width = 10,
+        height = 1
+    )
+
+tk.Label(page_menu,
+         text="Select what you want to search by").pack()
+make_button("id").pack()
+make_button("title").pack()
+make_button('tune').pack()
+make_button('key').pack()
+
+#----------End Main Menu Code -----------
 
 
+
+show_frame(page_menu)
 root.mainloop()
   
 

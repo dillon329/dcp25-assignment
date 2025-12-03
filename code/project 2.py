@@ -1,10 +1,11 @@
 from collections import Counter
 import tkinter as tk
+from tkinter import ttk
 import pandas as pd
 import sqlite3
 
 
-
+id_search_results = None
 search_tttt = None
 
 
@@ -94,20 +95,67 @@ while running != True:
     else:
         print("That is not valid")
 """
+def build_table(values):
+    global table_frame
+
+    if table_frame is not None:
+        table_frame.destroy()
+
+    table_frame = tk.Frame(page_search)
+    table_frame.pack(fill="both", expand=True)
+
+    columns = ('id', 'title', 'alt_title', 'tune', 'key')
+    tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=8)
+
+    for col in columns:
+        tree.heading(col, text=col)
+
+    scrollbar = ttk.Scrollbar(table_frame, orient=tk.VERTICAL, command=tree.yview)
+    tree.configure(yscrollcommand=scrollbar.set)
+
+    tree.grid(row=0, column=0, sticky="nsew")
+    scrollbar.grid(row=0, column=1, sticky="ns")
+
+    table_frame.grid_rowconfigure(0, weight=1)
+    table_frame.grid_columnconfigure(0, weight=1)
+
+    # ⬇⬇ THIS is the important bit ⬇⬇
+    tree.insert("", "end", values=values)  # ✅ keyword argument
+
+    return tree
+    
+
+
 def search_query(column_name,looking_For):
     pass
     
-def search_query_id(id):
-    result = df[df["id"] == int(id)]
+def search_query_id(query):
+    global id_search_results
+
+    row = df[df["id"] == int(query)]
+
+    # you *can* skip this if you're 100% sure ids are 1..len(df)
+    if row.empty:
+        tk.Label(page_search, text="No tune found with that ID").pack()
+        return
+
+    values = [row[col].iloc[0] for col in row.columns]
+    id_search_results = build_table(values)
     
+    
+    
+        
     
 def get_input_search(type,entry_widget):
     global search_tttt
     global df
+
     if search_tttt is not None:
         search_tttt.destroy()
     query = entry_widget.get()
     if type == 'id':
+        if id_search_results is not None:
+            id_search_results.destroy()
         if not query.isdigit():
             search_tttt = tk.Label(page_search, text = f"Your searched {query} from the {type}, you need to enter an integer")
             search_tttt.pack()
@@ -200,7 +248,25 @@ make_button('tune').pack()
 make_button('key').pack()
 
 #----------End Main Menu Code -----------
+table_frame = tk.Frame(page_search)
 
+
+table_frame.pack(fill="both", expand=True)
+
+columns = ('id','title','alt_title','tune','key')
+tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=8)
+
+for col in columns:
+    tree.heading(col, text=col)
+
+scrollbar = ttk.Scrollbar(table_frame, orient=tk.VERTICAL, command=tree.yview)
+tree.configure(yscrollcommand=scrollbar.set)
+
+tree.grid(row=0, column=0, sticky='nsew')
+scrollbar.grid(row=0, column=1, sticky='ns')
+
+table_frame.grid_rowconfigure(0, weight=1)
+table_frame.grid_columnconfigure(0, weight=1)
 
 
 show_frame(page_menu)

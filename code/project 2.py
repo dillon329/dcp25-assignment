@@ -7,6 +7,7 @@ import sqlite3
 
 id_search_results = None
 search_tttt = None
+str_search =None
 
 
 def search(tunes):
@@ -118,20 +119,64 @@ def build_table(values):
 
     table_frame.grid_rowconfigure(0, weight=1)
     table_frame.grid_columnconfigure(0, weight=1)
+    
 
-    # ⬇⬇ THIS is the important bit ⬇⬇
-    tree.insert("", "end", values=values)  # ✅ keyword argument
+   
+    for row in values:
+        tree.insert("", tk.END, values=row) 
 
     return tree
     
 
 
-def search_query(column_name,looking_For):
-    pass
+def search_query(column_name, looking_For):
+    global str_search
+    if str_search is not None:
+        str_search.destroy()
+    results = []
+    alt_title_checker = (column_name == 'title')
+
+    for index, row in df.iterrows():
+        match = False
+
+        value = str(row[column_name])
+        alt   = str(row['alt_title'])
+
+        if len(looking_For) >3 :
+            # contains
+            if looking_For.lower() in value.lower():
+                match = True
+            if alt_title_checker and looking_For.lower() in alt.lower() and alt != 'None':
+                match = True
+        else:
+            # startswith
+            if value.lower().startswith(looking_For.lower()):
+                match = True
+            if alt_title_checker and alt.lower().startswith(looking_For.lower()) and alt != 'None':
+                match = True
+
+        if match:
+            results.append([
+                row['id'],
+                row['title'],
+                row['alt_title'],
+                row['tune'],
+                row['key']
+            ])
+
+    # show results in the table (only if any)
+    if results:
+        str_search = build_table(results)
+    else:
+        str_search = tk.Label(page_search, text="No matches found")
+        str_search.pack()
+                    
+        
     
 def search_query_id(query):
     global id_search_results
-
+    store_results = []
+    values = []
     row = df[df["id"] == int(query)]
 
     # you *can* skip this if you're 100% sure ids are 1..len(df)
@@ -140,7 +185,8 @@ def search_query_id(query):
         return
 
     values = [row[col].iloc[0] for col in row.columns]
-    id_search_results = build_table(values)
+    store_results.append(values)
+    id_search_results = build_table(store_results)
     
     
     

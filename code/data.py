@@ -78,7 +78,7 @@ def decode_abc(text: str) -> str:
     return decoded
 
 
-def cleanFiles(lines):
+def cleanFiles(lines,current_file_count):
     current_tune_lines = {
                 "id": None,
                 "title": None,
@@ -106,7 +106,7 @@ def cleanFiles(lines):
                 "alt_title": '',
                 "tune": None,
                 "Key": None,
-                
+                "Book":current_file_count
             }
             title_check = False
             pass_through_1 = True
@@ -130,15 +130,17 @@ def cleanFiles(lines):
 
 def loadabcFiles(folder):
     global tunes 
+    current_file_count = 0
     #goes thorugh each abc file in the abc_books folder
     for foldername in os.listdir(folder):
         for filename in os.listdir(folder+"/"+foldername):
             if filename.endswith(".abc"):
+                current_file_count += 1
                 path = os.path.join(folder, foldername, filename)
                 with open(path, "r", encoding="utf-8") as f:
                     lines = f.readlines()
                     #prarses the line into a list
-                    tunes.append(cleanFiles(lines))
+                    tunes.append(cleanFiles(lines,current_file_count))
 
 
 def do_databasse_stuff():
@@ -148,13 +150,13 @@ def do_databasse_stuff():
     cursor = conn.cursor()
 
     # Create table
-    cursor.execute('CREATE TABLE IF NOT EXISTS tunes (id INTEGER, title TEXT, alt_title TEXT, tune TEXT, key TEXT)')
+    cursor.execute('CREATE TABLE IF NOT EXISTS tunes (id INTEGER, title TEXT, alt_title TEXT, tune TEXT, key TEXT, book INTEGER)')
     
     # Insert data
     for row in tunes:
         if row['alt_title'] == '':
             row['alt_title'] = None
-        cursor.execute('INSERT INTO tunes (id, title, alt_title, tune, key) VALUES (?, ?, ?, ?, ?)', (row['id'], row['title'],row['alt_title'],row['tune'],row['Key']))
+        cursor.execute('INSERT INTO tunes (id, title, alt_title, tune, key, book) VALUES (?, ?, ?, ?, ?, ?)', (row['id'], row['title'],row['alt_title'],row['tune'],row['Key'],row['Book']))
 
     # Save changes
     conn.commit()

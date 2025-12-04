@@ -60,42 +60,6 @@ def do_databasse_stuff():
 do_databasse_stuff()
 print(df)
 
-"""
-running = False 
- 
-while running != True:
-    search_type = input("Enter 1 to search by the index of the list \nEnter 2 to search by the name\n Press 3 to see tune types \nEnter q to quit")
-    if search_type == 'q':
-        running = True
-    elif not search_type.isdigit():
-        print("That is not a valid option")
-        print("That is not valid")
-    elif int(search_type) == 1:
-        while True:
-            print(f"\nThere are {len(tunes)} in this database, select a number between 1 and {len(tunes)} and it will show you information about that tune \nPress q to go back to search type")
-            database_index = input("")
-            if not database_index.isdigit():
-                if database_index.lower() == 'q':
-                    break
-                else:
-                    print("That is not a valid entry")
-            else:
-                index = int(database_index) - 1
-                if index > len(tunes) or index < 0:
-                    print("That number is not valid")
-                else:
-                    if tunes[index]['alt_title'] == '':
-                        print(f"{tunes[index]['title']} is the title of the track you have slected \nIt is an {tunes[index]['tune']} tune \nIt is written in {tunes[index]['title']} key")
-                    else:
-                        print(f"{tunes[index]['title']} is the title of the track you have selected\nIt has an alt title of {tunes[index['alt_title']]} \nIt is an {tunes[index]['tune']} tune \n it is written in {tunes[index]['title']} key")
-    elif int(search_type) == 2:
-        search(tunes)
-    elif int(search_type) == 3:
-        for tune in tune_list:
-            print(tune)  
-    else:
-        print("That is not valid")
-"""
 def build_table(values):
     global table_frame
 
@@ -105,7 +69,7 @@ def build_table(values):
     table_frame = tk.Frame(page_search)
     table_frame.pack(fill="both", expand=True)
 
-    columns = ('id', 'title', 'alt_title', 'tune', 'key')
+    columns = ('id', 'title', 'alt_title', 'tune', 'key','book')
     tree = ttk.Treeview(table_frame, columns=columns, show='headings', height=8)
 
     for col in columns:
@@ -130,6 +94,7 @@ def build_table(values):
 
 
 def search_query(column_name, looking_For):
+    #made it global so no error on first go around, it deletes each time a new input is made
     global str_search
     if str_search is not None:
         str_search.destroy()
@@ -143,13 +108,13 @@ def search_query(column_name, looking_For):
         alt   = str(row['alt_title'])
 
         if len(looking_For) >3 :
-            # contains
+            # contains reson why is that i feel as if words are 4 or more characters wrong they are searching for a certain word 
             if looking_For.lower() in value.lower():
                 match = True
             if alt_title_checker and looking_For.lower() in alt.lower() and alt != 'None':
                 match = True
         else:
-            # startswith
+            # startswith for 3 or less word as i feel that thats when people are wondering the begining of a song
             if value.lower().startswith(looking_For.lower()):
                 match = True
             if alt_title_checker and alt.lower().startswith(looking_For.lower()) and alt != 'None':
@@ -161,10 +126,11 @@ def search_query(column_name, looking_For):
                 row['title'],
                 row['alt_title'],
                 row['tune'],
-                row['key']
+                row['key'],
+                row['book']
             ])
 
-    # show results in the table (only if any)
+    # shows results if they are found if not says no matches found
     if results:
         str_search = build_table(results)
     else:
@@ -257,12 +223,12 @@ root.title("DCP-assignment")
 
 # ---------- helper to switch pages ----------
 def show_frame(frame):
-    frame.tkraise()  # bring this frame to the front
+    frame.tkraise()  
     
 container = tk.Frame(root)
 container.pack(fill="both", expand=True)
 
-# ---------- create two "pages" ----------
+# ---------- create two "pages" ---------- will create or 4 to veiw the stats
 page_menu = tk.Frame(container)
 page_search = tk.Frame(container)
 
@@ -292,6 +258,7 @@ make_button("id").pack()
 make_button("title").pack()
 make_button('tune').pack()
 make_button('key').pack()
+make_button('book').pack()
 
 #----------End Main Menu Code -----------
 table_frame = tk.Frame(page_search)
@@ -322,17 +289,7 @@ root.mainloop()
 
 
 
-"""
-checker = []
 
-for tune in tunes:
-    checker.append(tune['title'])
-
-counts = Counter(checker)
-duplicates = [checker for checker, count in counts.items() if count >= 2]
-
-duplicates = {title: count for title, count in counts.items() if count >= 2}
-"""
 
             
 

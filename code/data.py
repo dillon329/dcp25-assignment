@@ -95,7 +95,7 @@ def cleanFiles(lines,current_file_count):
         
         # Check if this starts a new tune
         line = line.strip()
-        decode_abc(line)
+        line = decode_abc(line)
         if line.startswith("X:"):
             if pass_through_1 != False:
                 tunes.append(current_tune_lines.copy())

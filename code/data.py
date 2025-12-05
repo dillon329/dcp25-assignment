@@ -1,8 +1,8 @@
-# Starter code to load in the files into a sql database
+
 import os 
 import sqlite3
 
-# sqlite for connecting to sqlite databases
+#code to do through each file and upload the data to a sql database tunes.db
 
 
 #done so that everything this program is run the database tunes.db is reset
@@ -133,9 +133,9 @@ def loadabcFiles(folder):
     current_file_count = 0
     #goes thorugh each abc file in the abc_books folder
     for foldername in os.listdir(folder):
+        current_file_count += 1
         for filename in os.listdir(folder+"/"+foldername):
             if filename.endswith(".abc"):
-                current_file_count += 1
                 path = os.path.join(folder, foldername, filename)
                 with open(path, "r", encoding="utf-8") as f:
                     lines = f.readlines()

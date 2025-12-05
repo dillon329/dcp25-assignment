@@ -2,6 +2,8 @@ import pandas as pd
 import sqlite3
 import matplotlib.pyplot as plt
 
+#code for stats and matplotLIB
+
 def do_databasse_stuff():
     global df
     conn = sqlite3.connect('tunes.db')
@@ -41,7 +43,7 @@ if other_total > 0:
 plt.figure()
 plt.pie(new_sizes, labels=new_labels, autopct='%1.1f%%')
 plt.title("Tunes: grouped <3% as Other")
-plt.show()
+plt.savefig("images/Tune_Chart.png")
 
 #Book bar chart
 
@@ -49,12 +51,13 @@ book_counts_list = list(df["book"].value_counts().items())
 
 labels = [item[0] for item in book_counts_list]
 counts = [item[1] for item in book_counts_list]
-
+plt.figure()
 plt.bar(labels, counts)
 plt.xlabel("Book Number")
 plt.ylabel("Count")
 plt.title("Books Bar Chart")
-plt.show()
+
+plt.savefig("images/book_chart.png")
 
 
 #Key Pie chart
@@ -82,7 +85,7 @@ if other_total > 0:
 plt.figure()
 plt.pie(new_sizes, labels=new_labels, autopct='%1.1f%%')
 plt.title("Key: grouped <3% as Other")
-plt.show()
+plt.savefig("images/key_chart.png")
 
 
 alt_counts = (
@@ -96,9 +99,9 @@ alt_counts = (
 
 alt_labels = alt_counts.index
 alt_values = alt_counts.values
-
-plt.bar(alt_labels, alt_counts)
+plt.figure()
+plt.bar(alt_labels, alt_values)
 plt.xlabel("Book Number")
 plt.ylabel("Count alt titles")
 plt.title("Alt_titles per Book Number")
-plt.show()
+plt.savefig("images/Alt_title_chart.png")

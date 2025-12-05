@@ -1,8 +1,12 @@
 from collections import Counter
+
 import tkinter as tk
 from tkinter import ttk
+
 import pandas as pd
 import sqlite3
+
+#code to work tkinter as a gui
 
 
 id_search_results = None
@@ -216,7 +220,6 @@ def click_search(type):
     
     
     
-    
 root = tk.Tk()
 root.title("DCP-assignment")
 
@@ -231,6 +234,7 @@ container.pack(fill="both", expand=True)
 # ---------- create two "pages" ---------- will create or 4 to veiw the stats
 page_menu = tk.Frame(container)
 page_search = tk.Frame(container)
+page_visuals = tk.Frame(container)
 
 for page in (page_menu, page_search):
     page.grid(row=0, column=0, sticky="nsew")

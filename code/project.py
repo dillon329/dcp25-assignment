@@ -2,6 +2,8 @@ from collections import Counter
 import os
 import re
 
+#Code written with no ui or sql database can be ignored when reveiwing the project
+#UI is in the terminal
 
 
 def search(tunes):

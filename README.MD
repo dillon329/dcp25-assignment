@@ -7,100 +7,56 @@ Name: Dillon Thornton
 Student Number: C24452624
 
 # Screenshots
+![tinkerbaseUI](images/ui_sreenshot.png)
+![tinker_search](images/search.png)
+![search_results](images/searchresults.png)
 
 # Description of the project
-
+This project goes through abc files and puts the data into SQL database, code can then be interacted with using tkinker or made into graphs using matplotLIB
 # Instructions for use
-
+Run the data.py file to insert the code into database
+- Run the visual.py file to run matplotlib with images of bar and pie charts to be saved into the images file
+- Run GUI to search for data by id,title,tune,key or book
 # How it works:
-
+The data.py thanks in all the data from the .abc files cleans it, and inserts it into tune.db. For everytime a line starts with X: it isnserts it into a list and then appends it to another list after the function is over. It repeats this proecess with each file in the directory. That data is then cleaned so no id can be none and each tune must have a title, duplicates are then gotten rid of and each row is give a new unique index. It also replaces the mojibake (garbled text) with what type of letter its supposed to be
+The visual.py file is all letting the user interact with the stats of the file, running this file will save bar charts and pie charts visualising the data in the images fold
+gui.py is an interface the users can interact with to see what the data is in the file, before seaching the user willl be prompted to select a button that filters their search into the categories of the column names, the can the search for the data and if the contiditions are met a table will display of the results of their search hopefully allowing them to find the information they had been looking for
 # List of files in the project
 
 | Files | Source |
 |-----------|-----------|
-| main.py | Self written |
-| test.py | Modified from [reference]() |
-| test.py | From [reference]() |
+| gui.py | Self written (modiefied with chatGPT) |
+| visual.py |Self written |
+| data.py | Self written Modified with ChatGpt |
+|images|All the matplotLib images|
 
 # References
-* Item 1
-* Item 2
+* https://www.youtube.com/watch?v=lyoyTlltFVU&t=348s
+* https://www.youtube.com/watch?v=TuLxsvK4svQ&t=8398s
+* ChatGPT
 
 # What I am most proud of in the assignment
 
-Bla bla bla
+I am most proud of using the tkinter interface to make a GUI, to make it go from mutiple pages was quit challenging and i need to look at youtube videos to help me with some of the design emlements, I feel as if i had good code reusablity with my use of functions in this part of the assignment as well
 
 # What I learned
+I learned how to use the OS to naigate file directories, tkinter to have a gui and mathplotLib to make charts, these where all new concepts that id never done be for and learning how to use each of these modules proved challenging but was quiet fun
 
-Bla bla bla
 
-## Below is how to use Markdown. You can delete this:
 
-## This is how to markdown text:
 
-This is *emphasis*
-
-This is a bulleted list
-
-- Item
-- Item
-
-This is a numbered list
-
-1. Item
-1. Item
-
-This is a [hyperlink](http://bryanduggan.org)
-
-# Headings
-## Headings
-#### Headings
-##### Headings
-
-This is code:
-
-```Java
-public void render()
-{
-	ui.noFill();
-	ui.stroke(255);
-	ui.rect(x, y, width, height);
-	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
-	ui.text(text, x + width * 0.5f, y + height * 0.5f);
-}
-```
-
-So is this without specifying the language:
-
-```
-public void render()
-{
-	ui.noFill();
-	ui.stroke(255);
-	ui.rect(x, y, width, height);
-	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
-	ui.text(text, x + width * 0.5f, y + height * 0.5f);
-}
-```
-
-This is an image using a relative URL:
+# MatplotLIB Charts
 
 ![An image](images/p8.png)
 
-This is an image using an absolute URL:
 
-![A different image](https://bryanduggandotorg.files.wordpress.com/2019/02/infinite-forms-00045.png?w=595&h=&zoom=2)
 
-This is a youtube video:
+![Books](images/book_chart.png)
 
-[![YouTube](http://img.youtube.com/vi/J2kHSSFA4NU/0.jpg)](https://www.youtube.com/watch?v=J2kHSSFA4NU)
+![Keys](images/key_chart.png)
 
-This is a table:
+![Tune Chart](images/Tune_Chart.png)
 
-| Heading 1 | Heading 2 |
-|-----------|-----------|
-|Some stuff | Some more stuff in this column |
-|Some stuff | Some more stuff in this column |
-|Some stuff | Some more stuff in this column |
 
-|Some stuff | Some more stuff in this column |
+![Alt title chart](images/Alt_title_chart.png)
+

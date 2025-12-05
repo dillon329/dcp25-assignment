@@ -14,13 +14,16 @@ Student Number: C24452624
 # Description of the project
 This project goes through abc files and puts the data into SQL database, code can then be interacted with using tkinker or made into graphs using matplotLIB
 # Instructions for use
-Run the data.py file to insert the code into database
+- Run the data.py file to insert the code into database
 - Run the visual.py file to run matplotlib with images of bar and pie charts to be saved into the images file
 - Run GUI to search for data by id,title,tune,key or book
 # How it works:
-The data.py thanks in all the data from the .abc files cleans it, and inserts it into tune.db. For everytime a line starts with X: it isnserts it into a list and then appends it to another list after the function is over. It repeats this proecess with each file in the directory. That data is then cleaned so no id can be none and each tune must have a title, duplicates are then gotten rid of and each row is give a new unique index. It also replaces the mojibake (garbled text) with what type of letter its supposed to be
-The visual.py file is all letting the user interact with the stats of the file, running this file will save bar charts and pie charts visualising the data in the images fold
-gui.py is an interface the users can interact with to see what the data is in the file, before seaching the user willl be prompted to select a button that filters their search into the categories of the column names, the can the search for the data and if the contiditions are met a table will display of the results of their search hopefully allowing them to find the information they had been looking for
+- The data.py thanks in all the data from the .abc files cleans it, and inserts it into tune.db. For everytime a line starts with X: it isnserts it into a list and then appends it to another list after the function is over. It repeats this proecess with each file in the directory. That data is then cleaned so no id can be none and each tune must have a title, duplicates are then gotten rid of and each row is give a new unique index. It also replaces the mojibake (garbled text) with what type of letter its supposed to be.
+
+- The visual.py file is all letting the user interact with the stats of the file, running this file will save bar charts and pie charts visualising the data in the images fold
+
+- gui.py is an interface the users can interact with to see what the data is in the file, before seaching the user willl be prompted to select a button that filters their search into the categories of the column names, the can the search for the data and if the contiditions are met a table will display of the results of their search hopefully allowing them to find the information they had been looking for
+- project.py is what i orginally had before loading using a database or ttkiner, the ui is in the terminal but has some unique features
 # List of files in the project
 
 | Files | Source |
@@ -28,6 +31,7 @@ gui.py is an interface the users can interact with to see what the data is in th
 | gui.py | Self written (modiefied with chatGPT) |
 | visual.py |Self written |
 | data.py | Self written Modified with ChatGpt |
+| project.py | Self written file with UI in the terminal |
 |images|All the matplotLib images|
 
 # References
@@ -46,8 +50,6 @@ I learned how to use the OS to naigate file directories, tkinter to have a gui a
 
 
 # MatplotLIB Charts
-
-![An image](images/p8.png)
 
 
 

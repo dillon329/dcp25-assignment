@@ -51,7 +51,7 @@ I learned how to use the OS to naigate file directories, tkinter to have a gui a
 
 # MatplotLIB Charts
 
-
+All Book chart are meant to be each indivdual file not book number
 
 ![Books](images/book_chart.png)
 

@@ -1,4 +1,4 @@
-
+#addapted startercode.py
 import os 
 import sqlite3
 

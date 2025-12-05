@@ -45,8 +45,7 @@ plt.pie(new_sizes, labels=new_labels, autopct='%1.1f%%')
 plt.title("Tunes: grouped <3% as Other")
 plt.savefig("images/Tune_Chart.png")
 
-#Book bar chart
-
+#Book bar chart all book charts where done when i read books in as each indivdual file, so that all of them as the amount of things per file
 book_counts_list = list(df["book"].value_counts().items())
 
 labels = [item[0] for item in book_counts_list]
